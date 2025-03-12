@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4DEC34C82D8181F80087C069 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4DEC34C72D8181F80087C069 /* SDWebImage */; };
+		4DEC34CA2D8181F80087C069 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4DEC34C92D8181F80087C069 /* SDWebImageMapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		4DEC34AA2D807B090087C069 /* Zhytnetskyi-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zhytnetskyi-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4DEC34CA2D8181F80087C069 /* SDWebImageMapKit in Frameworks */,
+				4DEC34C82D8181F80087C069 /* SDWebImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +85,8 @@
 			);
 			name = "Zhytnetskyi-App";
 			packageProductDependencies = (
+				4DEC34C72D8181F80087C069 /* SDWebImage */,
+				4DEC34C92D8181F80087C069 /* SDWebImageMapKit */,
 			);
 			productName = "Zhytnetskyi-App";
 			productReference = 4DEC34AA2D807B090087C069 /* Zhytnetskyi-App.app */;
@@ -107,6 +116,9 @@
 			);
 			mainGroup = 4DEC34A12D807B090087C069;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				4DEC34C62D8181F80087C069 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4DEC34AB2D807B090087C069 /* Products */;
 			projectDirPath = "";
@@ -339,6 +351,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4DEC34C62D8181F80087C069 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4DEC34C72D8181F80087C069 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DEC34C62D8181F80087C069 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		4DEC34C92D8181F80087C069 /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4DEC34C62D8181F80087C069 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4DEC34A22D807B090087C069 /* Project object */;
 }

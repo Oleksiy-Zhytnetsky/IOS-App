@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 final class Utils {
     
@@ -57,6 +58,20 @@ final class Utils {
         }
         
         return " \(count / 1_000_000_000)B"
+    }
+    
+    static func toggleBtnFill(
+        _ btn: UIButton,
+        imgName body: String
+    ) {
+        var btnImgName = body
+        if (btn.isSelected) {
+            btnImgName.append(".fill")
+        }
+        btn.setImage(
+            UIImage(systemName: btnImgName),
+            for: .normal
+        )
     }
     
 }

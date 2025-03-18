@@ -19,17 +19,11 @@ final class PostListViewController: UITableViewController {
     // MARK: - Properties
     private var posts: [ExtendedPostDetails] = []
     private var afterToken: String?
-    private var isLoading = false
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "r/\(Const.subredditName)"
-        
-        tableView.register(
-            PostTableViewCell.self,
-            forCellReuseIdentifier: Const.cellReuseId
-        )
         loadPosts(limit: 10)
     }
     
@@ -45,24 +39,14 @@ final class PostListViewController: UITableViewController {
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
+        let cell = tableView.dequeueReusableCell(
             withIdentifier: Const.cellReuseId,
             for: indexPath
-        ) as? PostTableViewCell else {
-            return UITableViewCell()
-        }
+        ) as! PostTableViewCell
+        
         let post = posts[indexPath.row]
         cell.configure(for: post)
         return cell
-    }
-    
-    // MARK: - UITableViewDelegate override
-    override func tableView(
-        _ tableView: UITableView,
-        didSelectRowAt indexPath: IndexPath
-    ) {
-        let post = posts[indexPath.row]
-        performSegue(withIdentifier: Const.detailsSegueId, sender: post)
     }
     
     // MARK: - UIScrollViewDelegate override
@@ -77,24 +61,30 @@ final class PostListViewController: UITableViewController {
     }
     
     // MARK: - Navigation
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        switch segue.identifier {
-//        case Const.detailsSegueId:
-//            let detailsVC = segue.destination as! PostDetailsViewController
-//            let post = sender as! ExtendedPostDetails
-//            detailsVC.post = post
-//
-//        default: break
-//        }
-//    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Const.detailsSegueId {
+            let detailsVC = segue.destination as! PostDetailsViewController
+            if let post = sender as? ExtendedPostDetails {
+                detailsVC.post = post
+            }
+            else if let cell = sender as? UITableViewCell,
+                    let indexPath = tableView.indexPath(for: cell) {
+                detailsVC.post = posts[indexPath.row]
+            }
+        }
+    }
+    
+    // MARK: - Action handlers
+    @IBAction func bookmarkBtnTapped(_ sender: UIButton) {
+        sender.isSelected.toggle()
+        Utils.toggleBtnFill(
+            sender,
+            imgName: "bookmark"
+        )
+    }
 
     // MARK: - Private methods
     private func loadPosts(limit: Int) {
-        guard !isLoading else {
-            return
-        }
-        isLoading = true
-        
         Task {
             do {
                 let response = try await PostApiClient.fetchPosts(
@@ -103,25 +93,37 @@ final class PostListViewController: UITableViewController {
                     after: afterToken
                 )
                 
-                // Map the API response to our model
                 let newPosts = response.data.children.map { child in
                     return ExtendedPostDetails(
                         data: child.data,
                         saved: Bool.random()
                     )
                 }
-                // Update pagination token from the response
                 self.afterToken = response.data.after
                 
-                // Append new posts and reload table view on the main thread
+//                DispatchQueue.main.async {
+//                    self.posts.append(contentsOf: newPosts)
+//                    self.tableView.reloadData()
+//                }
+                
                 DispatchQueue.main.async {
+                    let startIndex = self.posts.count
                     self.posts.append(contentsOf: newPosts)
-                    self.tableView.reloadData()
+                    let indexPaths = (startIndex..<self.posts.count).map {
+                        IndexPath(row: $0, section: 0)
+                    }
+                    self.tableView.performBatchUpdates {
+                        self.tableView.insertRows(
+                            at: indexPaths,
+                            with: .automatic
+                        )
+                    }
                 }
-            } catch {
+
+            }
+            catch {
                 print("Error loading posts: \(error)")
             }
-            self.isLoading = false
         }
     }
 }

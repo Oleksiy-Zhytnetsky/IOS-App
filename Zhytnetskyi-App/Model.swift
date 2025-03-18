@@ -32,6 +32,7 @@ struct PostDetails : Codable {
     let title: String
     let num_comments: Int
     let score: Int
+    let selftext: String
     let url: String // raw img url
     let created: TimeInterval // unix timestamp
     

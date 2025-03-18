@@ -10,32 +10,59 @@ import SDWebImage
 
 final class PostDetailsViewController: UIViewController {
     
-    // Variable to receive the selected post data
-    var post: ExtendedPostDetails?
+    // MARK: - Properties
+    var post: ExtendedPostDetails!
     
-    // Connect these outlets from your storyboard scene
-    @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var timeSincePostLabel: UILabel!
-    @IBOutlet weak var domainLabel: UILabel!
-    @IBOutlet weak var postTitleLabel: UILabel!
-    @IBOutlet weak var postImageView: UIImageView!
-    @IBOutlet weak var descriptionLabel: UILabel! // Additional details
+    // MARK: - Outlets
+    @IBOutlet private weak var userNameLabel: UILabel!
+    @IBOutlet private weak var timeSincePostLabel: UILabel!
+    @IBOutlet private weak var domainLabel: UILabel!
+    @IBOutlet private weak var postTitleLabel: UILabel!
+    @IBOutlet private weak var postDescriptionLabel: UILabel!
+    @IBOutlet private weak var postImageView: UIImageView!
+    @IBOutlet private weak var bookmarkBtn: UIButton!
+    @IBOutlet private weak var upvoteBtn: UIButton!
+    @IBOutlet private weak var commentsBtn: UIButton!
     
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Safely unwrap post data
-        guard let post = post else { return }
-        userNameLabel.text = post.data.author_fullname
-        timeSincePostLabel.text = Utils.formatTimeSincePost(post.data.created)
-        domainLabel.text = post.data.domain
-        postTitleLabel.text = post.data.title
-        
-        // For example, show more details in descriptionLabel. Update this as needed.
-        descriptionLabel.text = "Here is a detailed view of the post."
-        
-        if let imageUrl = URL(string: post.data.cleanedUrl) {
-            postImageView.sd_setImage(with: imageUrl, placeholderImage: UIImage(named: "placeholder.png"))
+        DispatchQueue.main.async {
+            self.userNameLabel.text = self.post.data.author_fullname
+            self.timeSincePostLabel.text = Utils.formatTimeSincePost(
+                self.post.data.created
+            )
+            self.domainLabel.text = self.post.data.domain
+            self.postTitleLabel.text = self.post.data.title
+            self.postDescriptionLabel.text = self.post.data.selftext
+            self.upvoteBtn.setTitle(
+                Utils.formatNumCount(self.post.data.score),
+                for: .normal
+            )
+            self.commentsBtn.setTitle(
+                Utils.formatNumCount(self.post.data.num_comments),
+                for: .normal
+            )
+            self.postImageView.sd_setImage(
+                with: URL(string: self.post.data.cleanedUrl),
+                placeholderImage: UIImage(named: "placeholder")
+            )
+            
+            if (self.post.saved) {
+                Utils.toggleBtnFill(
+                    self.bookmarkBtn,
+                    imgName: "bookmark"
+                )
+            }
         }
+    }
+    
+    // MARK: - Action handlers
+    @IBAction func bookmarkBtnTapped(_ sender: UIButton) {
+        sender.isSelected.toggle()
+        Utils.toggleBtnFill(
+            sender,
+            imgName: "bookmark"
+        )
     }
 }

@@ -52,15 +52,17 @@ final class PostViewController: UIViewController {
                         Utils.formatNumCount(post.data.num_comments),
                         for: .normal
                     )
-                }
-                
-                postImageView.sd_setImage(
-                    with: URL(string: post.data.cleanedUrl),
-                    placeholderImage: UIImage(named: "placeholder")
-                )
-                
-                if (post.saved) {
-                    toggleBtnImg(self.bookmarkBtn)
+                    self.postImageView.sd_setImage(
+                        with: URL(string: post.data.cleanedUrl),
+                        placeholderImage: UIImage(named: "placeholder")
+                    )
+                    
+                    if (post.saved) {
+                        Utils.toggleBtnFill(
+                            self.bookmarkBtn,
+                            imgName: "bookmark"
+                        )
+                    }
                 }
             }
             catch {
@@ -72,18 +74,9 @@ final class PostViewController: UIViewController {
     @IBAction
     func bookmarkBtnTapped(_ sender: UIButton) {
         sender.isSelected.toggle()
-        toggleBtnImg(sender)
-    }
-    
-    private func toggleBtnImg(_ btn: UIButton) {
-        var imgName: String = "bookmark"
-        if (btn.isSelected) {
-            imgName.append(".fill")
-        }
-        
-        btn.setImage(
-            UIImage(systemName: imgName),
-            for: .normal
+        Utils.toggleBtnFill(
+            sender,
+            imgName: "bookmark"
         )
     }
     

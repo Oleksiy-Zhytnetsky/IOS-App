@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="b3D-LY-adQ">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
@@ -176,7 +176,70 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="133.125" y="2.112676056338028"/>
+            <point key="canvasLocation" x="-840" y="6"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="331-kw-ote">
+            <objects>
+                <navigationController id="b3D-LY-adQ" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nVH-Tb-dzc">
+                        <rect key="frame" x="0.0" y="62" width="440" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="largeTitleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="1wS-aH-Yh5" kind="relationship" relationship="rootViewController" id="0R3-LJ-eSu"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sjO-kx-97c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-840" y="-667"/>
+        </scene>
+        <!--PostListViewController-->
+        <scene sceneID="nLk-qZ-Z4I">
+            <objects>
+                <tableViewController id="1wS-aH-Yh5" userLabel="PostListViewController" customClass="PostListViewController" customModule="Zhytnetskyi_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="LSf-zS-16Y" userLabel="PostTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PostTableCell" id="nfs-lJ-ihp" userLabel="PostViewCell" customClass="PostTableViewCell" customModule="Zhytnetskyi_App" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="50" width="440" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nfs-lJ-ihp" id="oZ6-h6-A1T" userLabel="PostView">
+                                    <rect key="frame" x="0.0" y="0.0" width="440" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="1wS-aH-Yh5" id="OMl-2X-bKm"/>
+                            <outlet property="delegate" destination="1wS-aH-Yh5" id="fpI-Yq-BUX"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="mrR-3E-8DY"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UHv-op-vSF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-67" y="-667"/>
+        </scene>
+        <!--PostDetailsViewController-->
+        <scene sceneID="cAB-6t-RY8">
+            <objects>
+                <viewController id="Ban-hc-qkC" userLabel="PostDetailsViewController" customClass="PostDetailsViewController" customModule="Zhytnetskyi_App" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="s8X-u4-saX" userLabel="ScreenView">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="VgN-Cb-Pma"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yzR-nA-KLc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="712" y="-667"/>
         </scene>
     </scenes>
     <resources>

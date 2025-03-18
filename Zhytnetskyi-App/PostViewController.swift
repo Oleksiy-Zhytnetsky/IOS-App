@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class PostViewController: UIViewController {
+final class PostViewController: UIViewController {
     
     @IBOutlet private weak var userNameLabel: UILabel!
     @IBOutlet private weak var timeSincePostLabel: UILabel!
@@ -56,7 +56,7 @@ class PostViewController: UIViewController {
                 
                 postImageView.sd_setImage(
                     with: URL(string: post.data.cleanedUrl),
-                    placeholderImage: UIImage(named: "placeholder.png")
+                    placeholderImage: UIImage(named: "placeholder")
                 )
                 
                 if (post.saved) {

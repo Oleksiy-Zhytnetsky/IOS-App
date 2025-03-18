@@ -7,7 +7,7 @@
 
 import Foundation
 
-class PostApiClient {
+final class PostApiClient {
     
     static func fetchPosts(
         subreddit: String,

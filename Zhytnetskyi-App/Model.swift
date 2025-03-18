@@ -33,7 +33,7 @@ struct PostDetails : Codable {
     let num_comments: Int
     let score: Int
     let url: String // raw img url
-    let created: Double // unix timestamp
+    let created: TimeInterval // unix timestamp
     
     var cleanedUrl: String {
         return url.replacingOccurrences(of: "&amp;", with: "&")

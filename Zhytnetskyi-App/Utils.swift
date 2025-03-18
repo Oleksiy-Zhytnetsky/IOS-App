@@ -7,9 +7,9 @@
 
 import Foundation
 
-class Utils {
+final class Utils {
     
-    static func formatTimeSincePost(_ timestamp: Double) -> String {
+    static func formatTimeSincePost(_ timestamp: TimeInterval) -> String {
         let seconds = Int(Date().timeIntervalSince1970 - timestamp)
         if seconds < 60 {
             return "\(seconds)s"

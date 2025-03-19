@@ -14,17 +14,19 @@ final class PostListViewController: UITableViewController {
         static let subredditName = "ios"
         static let cellReuseId = "PostTableCell"
         static let detailsSegueId = "ShowDetailsSegue"
+        static let loadLimit = 15
     }
     
     // MARK: - Properties
     private var posts: [ExtendedPostDetails] = []
     private var afterToken: String?
+    private var isLoading: Bool = false
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "r/\(Const.subredditName)"
-        loadPosts(limit: 10)
+        loadPosts(limit: Const.loadLimit)
     }
     
     // MARK: - UITableViewDataSource override
@@ -55,9 +57,20 @@ final class PostListViewController: UITableViewController {
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height
         
-        if (offsetY > (contentHeight - height - 100)) {
-            loadPosts(limit: 10)
+        if (offsetY > (contentHeight - height)) {
+            loadPosts(limit: Const.loadLimit)
         }
+    }
+    
+    // MARK: - UIViewController override
+    override func viewWillTransition(
+        to size: CGSize,
+        with coordinator: UIViewControllerTransitionCoordinator
+    ) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { _ in
+            self.tableView.reloadData()
+        })
     }
     
     // MARK: - Navigation
@@ -85,7 +98,18 @@ final class PostListViewController: UITableViewController {
 
     // MARK: - Private methods
     private func loadPosts(limit: Int) {
+        guard (!isLoading) else {
+            return
+        }
+        isLoading = true
+        
         Task {
+            defer {
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                }
+            }
+            
             do {
                 let response = try await PostApiClient.fetchPosts(
                     subreddit: Const.subredditName,
@@ -99,24 +123,21 @@ final class PostListViewController: UITableViewController {
                         saved: Bool.random()
                     )
                 }
-                self.afterToken = response.data.after
-                
-//                DispatchQueue.main.async {
-//                    self.posts.append(contentsOf: newPosts)
-//                    self.tableView.reloadData()
-//                }
                 
                 DispatchQueue.main.async {
+                    self.afterToken = response.data.after
                     let startIndex = self.posts.count
                     self.posts.append(contentsOf: newPosts)
                     let indexPaths = (startIndex..<self.posts.count).map {
                         IndexPath(row: $0, section: 0)
                     }
+                    
                     self.tableView.performBatchUpdates {
-                        self.tableView.insertRows(
-                            at: indexPaths,
-                            with: .automatic
-                        )
+                        self.tableView.insertRows(at: indexPaths, with: .automatic)
+                    } completion: { _ in
+                        if let visibleRows = self.tableView.indexPathsForVisibleRows {
+                            self.tableView.reloadRows(at: visibleRows, with: .none)
+                        }
                     }
                 }
 

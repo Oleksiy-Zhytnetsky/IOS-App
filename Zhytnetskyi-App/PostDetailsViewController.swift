@@ -10,7 +10,7 @@ import SDWebImage
 
 private typealias PostListConst = PostListViewController.Const
 
-final class PostDetailsViewController: UIViewController {
+final class PostDetailsViewController : UIViewController {
     
     // MARK: - Properties
     private var post: ExtendedPostDetails!

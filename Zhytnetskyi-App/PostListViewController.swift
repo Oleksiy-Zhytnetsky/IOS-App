@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PostListViewController: UITableViewController {
+final class PostListViewController : UITableViewController, UITextFieldDelegate {
     
     // MARK: - Const
     enum Const {
@@ -21,12 +21,14 @@ final class PostListViewController: UITableViewController {
     
     // MARK: - Properties
     private var posts: [ExtendedPostDetails] = []
+    private var allSavedPosts: [ExtendedPostDetails] = []
     private var afterToken: String?
     private var isLoading: Bool = false
     private var isOfflineMode: Bool = false
     
     // MARK: - Outlets
     @IBOutlet private weak var appModeBtn: UIButton!
+    @IBOutlet private weak var searchTextField: UITextField!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -35,12 +37,27 @@ final class PostListViewController: UITableViewController {
         
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(onPostSavedStatusChanged(_:)),
+            selector: #selector(onPostSavedStatusChanged),
             name: NSNotification.Name(Const.postSavedNotificationId),
             object: nil
         )
         
         self.appModeBtn.isSelected = false
+        self.searchTextField.delegate = self
+        self.searchTextField.addTarget(
+            self,
+            action: #selector(onSearchTextChanged),
+            for: .editingChanged
+        )
+        self.searchTextField.isHidden = true
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(onTapInSearchField)
+        )
+        tapGestureRecognizer.cancelsTouchesInView = false
+        self.navigationController?.view.addGestureRecognizer(tapGestureRecognizer)
+        
         loadPosts(limit: Const.loadLimit)
     }
     
@@ -49,7 +66,7 @@ final class PostListViewController: UITableViewController {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        return posts.count
+        return self.posts.count
     }
     
     override func tableView(
@@ -61,7 +78,7 @@ final class PostListViewController: UITableViewController {
             for: indexPath
         ) as! PostTableViewCell
         
-        let post = posts[indexPath.row]
+        let post = self.posts[indexPath.row]
         cell.configure(for: post)
         return cell
     }
@@ -75,6 +92,12 @@ final class PostListViewController: UITableViewController {
         if (offsetY > (contentHeight - height)) {
             loadPosts(limit: Const.loadLimit)
         }
+    }
+    
+    // MARK: - UITextFieldDelegate override
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     // MARK: - UIViewController override
@@ -97,7 +120,7 @@ final class PostListViewController: UITableViewController {
             }
             else if let cell = sender as? UITableViewCell,
                     let indexPath = tableView.indexPath(for: cell) {
-                detailsVC.setPost(posts[indexPath.row])
+                detailsVC.setPost(self.posts[indexPath.row])
             }
         }
     }
@@ -112,17 +135,25 @@ final class PostListViewController: UITableViewController {
         self.isOfflineMode = sender.isSelected
         
         if (isOfflineMode) {
-            self.posts = SavedPostsManager.shared.getAllSavedPosts()
+            self.allSavedPosts = SavedPostsManager.shared.getAllSavedPosts()
+            self.posts = self.allSavedPosts
             self.tableView.reloadData()
+            
+            self.searchTextField.isHidden = false
+            self.searchTextField.isUserInteractionEnabled = true
         }
         else {
+            self.searchTextField.isHidden = true
+            self.searchTextField.isUserInteractionEnabled = false
+            self.searchTextField.text = ""
+            
             self.posts.removeAll()
             self.afterToken = nil
             tableView.reloadData()
             loadPosts(limit: Const.loadLimit)
         }
     }
-
+    
     @objc
     private func onPostSavedStatusChanged(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
@@ -137,10 +168,38 @@ final class PostListViewController: UITableViewController {
             if self.isOfflineMode && !saved {
                 self.posts.remove(at: index)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
+                allSavedPosts.removeAll(where: { $0.data.permalink == permalink })
             }
             else {
                 tableView.reloadRows(at: [indexPath], with: .none)
             }
+        }
+    }
+    
+    @objc
+    private func onSearchTextChanged(_ textField: UITextField) {
+        guard (self.isOfflineMode) else {
+            return
+        }
+        
+        let filterQuery = textField.text
+        if (filterQuery != nil && !(filterQuery!.isEmpty)) {
+            let query = filterQuery!.lowercased()
+            self.posts = self.allSavedPosts.filter {
+                $0.data.title.lowercased().contains(query)
+            }
+        }
+        else {
+            self.posts = self.allSavedPosts
+        }
+        
+        tableView.reloadData()
+    }
+    
+    @objc
+    private func onTapInSearchField() {
+        if (!self.searchTextField.isHidden) {
+            self.searchTextField.becomeFirstResponder()
         }
     }
     

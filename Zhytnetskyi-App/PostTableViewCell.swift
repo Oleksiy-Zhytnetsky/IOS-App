@@ -10,7 +10,7 @@ import SDWebImage
 
 private typealias PostListConst = PostListViewController.Const
 
-final class PostTableViewCell: UITableViewCell {
+final class PostTableViewCell : UITableViewCell {
     
     // MARK: - Const
     private enum Const {

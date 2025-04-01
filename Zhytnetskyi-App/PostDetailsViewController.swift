@@ -8,6 +8,8 @@
 import UIKit
 import SDWebImage
 
+private typealias PostListConst = PostListViewController.Const
+
 final class PostDetailsViewController: UIViewController {
     
     // MARK: - Properties
@@ -50,7 +52,7 @@ final class PostDetailsViewController: UIViewController {
             )
             
             if (self.post.saved) {
-                Utils.toggleBtnFill(
+                Utils.enableBtnFill(
                     self.bookmarkBtn,
                     imgName: "bookmark"
                 )
@@ -65,6 +67,17 @@ final class PostDetailsViewController: UIViewController {
             sender,
             imgName: "bookmark"
         )
+        
+        self.post.saved = sender.isSelected
+        NotificationCenter.default.post(
+            name: NSNotification.Name(PostListConst.postSavedNotificationId),
+            object: nil,
+            userInfo: [
+                "permalink": self.post.data.permalink,
+                "saved": self.post.saved
+            ]
+        )
+        SavedPostsManager.shared.updatePost(self.post)
     }
     
     @IBAction func shareBtnTapped(_ sender: UIButton) {

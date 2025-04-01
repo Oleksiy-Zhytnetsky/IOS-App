@@ -8,7 +8,14 @@
 import UIKit
 import SDWebImage
 
+private typealias PostListConst = PostListViewController.Const
+
 final class PostTableViewCell: UITableViewCell {
+    
+    // MARK: - Const
+    private enum Const {
+        static let placeholderImageName = "placeholder"
+    }
     
     // MARK: - Properties
     private var post: ExtendedPostDetails?
@@ -33,7 +40,10 @@ final class PostTableViewCell: UITableViewCell {
         self.domainLabel.text = nil
         self.postTitleLabel.text = nil
         self.postImageView.image = nil
-        disableBookmarkBtn(bookmarkBtn)
+        Utils.disableBtnFill(
+            self.bookmarkBtn,
+            imgName: "bookmark"
+        )
     }
     
     // MARK: - Public methods
@@ -57,11 +67,14 @@ final class PostTableViewCell: UITableViewCell {
             
             self.postImageView.sd_setImage(
                 with: URL(string: post.data.cleanedUrl),
-                placeholderImage: UIImage(named: "placeholder")
+                placeholderImage: UIImage(named: Const.placeholderImageName)
             )
             
             if (post.saved) {
-                self.enableBookmarkBtn(self.bookmarkBtn)
+                Utils.enableBtnFill(
+                    self.bookmarkBtn,
+                    imgName: "bookmark"
+                )
             }
         }
     }
@@ -73,6 +86,22 @@ final class PostTableViewCell: UITableViewCell {
             sender,
             imgName: "bookmark"
         )
+        
+        guard var post = self.post else {
+            return
+        }
+        post.saved = sender.isSelected
+        self.post = post
+        
+        NotificationCenter.default.post(
+            name: NSNotification.Name(PostListConst.postSavedNotificationId),
+            object: nil,
+            userInfo: [
+                "permalink": post.data.permalink,
+                "saved": post.saved
+            ]
+        )
+        SavedPostsManager.shared.updatePost(post)
     }
     
     @IBAction func shareBtnTapped(_ sender: UIButton) {
@@ -89,24 +118,6 @@ final class PostTableViewCell: UITableViewCell {
             parentVC.present(activityVC, animated: true, completion: nil)
         }
     }
-    
-    // MARK: - Private methods
-    private func enableBookmarkBtn(_ btn: UIButton) {
-        btn.isSelected = true
-        btn.setImage(
-            UIImage(systemName: "bookmark.fill"),
-            for: .normal
-        )
-    }
-    
-    private func disableBookmarkBtn(_ btn: UIButton) {
-        btn.isSelected = false
-        btn.setImage(
-            UIImage(systemName: "bookmark"),
-            for: .normal
-        )
-    }
-    
 }
 
 // MARK: - Extensions

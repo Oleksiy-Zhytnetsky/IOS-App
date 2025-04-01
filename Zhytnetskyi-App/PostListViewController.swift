@@ -10,22 +10,37 @@ import UIKit
 final class PostListViewController: UITableViewController {
     
     // MARK: - Const
-    private struct Const {
+    enum Const {
         static let subredditName = "ios"
+        static let loadLimit = 15
+        
         static let cellReuseId = "PostTableCell"
         static let detailsSegueId = "ShowDetailsSegue"
-        static let loadLimit = 15
+        static let postSavedNotificationId = "PostSavedStatusChanged"
     }
     
     // MARK: - Properties
     private var posts: [ExtendedPostDetails] = []
     private var afterToken: String?
     private var isLoading: Bool = false
+    private var isOfflineMode: Bool = false
+    
+    // MARK: - Outlets
+    @IBOutlet private weak var appModeBtn: UIButton!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "r/\(Const.subredditName)"
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onPostSavedStatusChanged(_:)),
+            name: NSNotification.Name(Const.postSavedNotificationId),
+            object: nil
+        )
+        
+        self.appModeBtn.isSelected = false
         loadPosts(limit: Const.loadLimit)
     }
     
@@ -88,14 +103,47 @@ final class PostListViewController: UITableViewController {
     }
     
     // MARK: - Action handlers
-    @IBAction func bookmarkBtnTapped(_ sender: UIButton) {
+    @IBAction func appModeBtnTapped(_ sender: UIButton) {
         sender.isSelected.toggle()
         Utils.toggleBtnFill(
             sender,
             imgName: "bookmark"
         )
+        self.isOfflineMode = sender.isSelected
+        
+        if (isOfflineMode) {
+            self.posts = SavedPostsManager.shared.getAllSavedPosts()
+            self.tableView.reloadData()
+        }
+        else {
+            self.posts.removeAll()
+            self.afterToken = nil
+            tableView.reloadData()
+            loadPosts(limit: Const.loadLimit)
+        }
     }
 
+    @objc
+    private func onPostSavedStatusChanged(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let permalink = userInfo["permalink"] as? String,
+              let saved = userInfo["saved"] as? Bool else {
+            return
+        }
+        
+        if let index = self.posts.firstIndex(where: { $0.data.permalink == permalink }) {
+            self.posts[index].saved = saved
+            let indexPath = IndexPath(row: index, section: 0)
+            if self.isOfflineMode && !saved {
+                self.posts.remove(at: index)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+            }
+            else {
+                tableView.reloadRows(at: [indexPath], with: .none)
+            }
+        }
+    }
+    
     // MARK: - Private methods
     private func loadPosts(limit: Int) {
         guard (!isLoading) else {
@@ -118,29 +166,39 @@ final class PostListViewController: UITableViewController {
                 )
                 
                 let newPosts = response.data.children.map { child in
+                    let isSaved = SavedPostsManager.shared.isPostSaved(
+                        permalink: child.data.permalink
+                    )
                     return ExtendedPostDetails(
                         data: child.data,
-                        saved: Bool.random()
+                        saved: isSaved
                     )
                 }
                 
-                DispatchQueue.main.async {
-                    self.afterToken = response.data.after
-                    let startIndex = self.posts.count
-                    self.posts.append(contentsOf: newPosts)
-                    let indexPaths = (startIndex..<self.posts.count).map {
-                        IndexPath(row: $0, section: 0)
-                    }
-                    
-                    self.tableView.performBatchUpdates {
-                        self.tableView.insertRows(at: indexPaths, with: .automatic)
-                    } completion: { _ in
-                        if let visibleRows = self.tableView.indexPathsForVisibleRows {
-                            self.tableView.reloadRows(at: visibleRows, with: .none)
+                if (!self.isOfflineMode) {
+                    DispatchQueue.main.async {
+                        self.afterToken = response.data.after
+                        let startIndex = self.posts.count
+                        self.posts.append(contentsOf: newPosts)
+                        let indexPaths = (startIndex..<self.posts.count).map {
+                            IndexPath(row: $0, section: 0)
+                        }
+                        
+                        self.tableView.performBatchUpdates {
+                            self.tableView.insertRows(
+                                at: indexPaths,
+                                with: .automatic
+                            )
+                        } completion: { _ in
+                            if let visibleRows = self.tableView.indexPathsForVisibleRows {
+                                self.tableView.reloadRows(
+                                    at: visibleRows,
+                                    with: .none
+                                )
+                            }
                         }
                     }
                 }
-
             }
             catch {
                 print("Error loading posts: \(error)")

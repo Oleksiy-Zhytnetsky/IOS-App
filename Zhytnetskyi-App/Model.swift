@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct ExtendedPostDetails {
+struct ExtendedPostDetails : Codable {
     let data: PostDetails
-    let saved: Bool
+    var saved: Bool
 }
 
 struct ApiResponse : Codable {

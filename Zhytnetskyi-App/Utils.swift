@@ -62,16 +62,40 @@ final class Utils {
     
     static func toggleBtnFill(
         _ btn: UIButton,
-        imgName body: String
+        imgName: String
     ) {
-        var btnImgName = body
+        var imgName = imgName
         if (btn.isSelected) {
-            btnImgName.append(".fill")
+            imgName.append(".fill")
         }
         btn.setImage(
-            UIImage(systemName: btnImgName),
+            UIImage(systemName: imgName),
             for: .normal
         )
     }
     
+    static func enableBtnFill(
+        _ btn: UIButton,
+        imgName: String
+    ) {
+        var imgName = imgName
+        imgName.append(".fill")
+        
+        btn.isSelected = true
+        btn.setImage(
+            UIImage(systemName: imgName),
+            for: .normal
+        )
+    }
+    
+    static func disableBtnFill(
+        _ btn: UIButton,
+        imgName: String
+    ) {
+        btn.isSelected = false
+        btn.setImage(
+            UIImage(systemName: imgName),
+            for: .normal
+        )
+    }
 }

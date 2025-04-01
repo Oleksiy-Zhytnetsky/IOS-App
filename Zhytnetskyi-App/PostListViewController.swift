@@ -51,13 +51,6 @@ final class PostListViewController : UITableViewController, UITextFieldDelegate 
         )
         self.searchTextField.isHidden = true
         
-        let tapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(onTapInSearchField)
-        )
-        tapGestureRecognizer.cancelsTouchesInView = false
-        self.navigationController?.view.addGestureRecognizer(tapGestureRecognizer)
-        
         loadPosts(limit: Const.loadLimit)
     }
     
@@ -194,13 +187,6 @@ final class PostListViewController : UITableViewController, UITextFieldDelegate 
         }
         
         tableView.reloadData()
-    }
-    
-    @objc
-    private func onTapInSearchField() {
-        if (!self.searchTextField.isHidden) {
-            self.searchTextField.becomeFirstResponder()
-        }
     }
     
     // MARK: - Private methods

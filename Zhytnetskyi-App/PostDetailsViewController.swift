@@ -11,7 +11,7 @@ import SDWebImage
 final class PostDetailsViewController: UIViewController {
     
     // MARK: - Properties
-    var post: ExtendedPostDetails!
+    private var post: ExtendedPostDetails!
     
     // MARK: - Outlets
     @IBOutlet private weak var userNameLabel: UILabel!
@@ -23,6 +23,7 @@ final class PostDetailsViewController: UIViewController {
     @IBOutlet private weak var bookmarkBtn: UIButton!
     @IBOutlet private weak var upvoteBtn: UIButton!
     @IBOutlet private weak var commentsBtn: UIButton!
+    @IBOutlet private weak var shareBtn: UIButton!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -64,5 +65,22 @@ final class PostDetailsViewController: UIViewController {
             sender,
             imgName: "bookmark"
         )
+    }
+    
+    @IBAction func shareBtnTapped(_ sender: UIButton) {
+        guard let postUrl = URL(string: self.post.data.postUrl) else {
+            return
+        }
+        
+        let activityVC = UIActivityViewController(
+            activityItems: [postUrl],
+            applicationActivities: nil
+        )
+        self.present(activityVC, animated: true, completion: nil)
+    }
+    
+    // MARK: - Selectors & Modifiers
+    func setPost(_ newPost: ExtendedPostDetails) {
+        self.post = newPost
     }
 }

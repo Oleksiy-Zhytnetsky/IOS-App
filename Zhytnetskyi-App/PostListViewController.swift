@@ -78,11 +78,11 @@ final class PostListViewController: UITableViewController {
         if segue.identifier == Const.detailsSegueId {
             let detailsVC = segue.destination as! PostDetailsViewController
             if let post = sender as? ExtendedPostDetails {
-                detailsVC.post = post
+                detailsVC.setPost(post)
             }
             else if let cell = sender as? UITableViewCell,
                     let indexPath = tableView.indexPath(for: cell) {
-                detailsVC.post = posts[indexPath.row]
+                detailsVC.setPost(posts[indexPath.row])
             }
         }
     }

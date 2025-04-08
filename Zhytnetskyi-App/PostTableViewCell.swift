@@ -20,6 +20,9 @@ final class PostTableViewCell : UITableViewCell {
     // MARK: - Properties
     private var post: ExtendedPostDetails?
     
+    // MARK: - Delegates
+    weak var delegate: PostTableViewCellDelegate?
+    
     // MARK: - Outlets
     @IBOutlet private weak var userNameLabel: UILabel!
     @IBOutlet private weak var timeSincePostLabel: UILabel!
@@ -30,6 +33,7 @@ final class PostTableViewCell : UITableViewCell {
     @IBOutlet private weak var upvoteBtn: UIButton!
     @IBOutlet private weak var commentsBtn: UIButton!
     @IBOutlet private weak var shareBtn: UIButton!
+    @IBOutlet private weak var bookmarkAnimView: UIView!
     
     // MARK: - Lifecycle
     override func prepareForReuse() {
@@ -40,6 +44,11 @@ final class PostTableViewCell : UITableViewCell {
         self.domainLabel.text = nil
         self.postTitleLabel.text = nil
         self.postImageView.image = nil
+        
+        self.gestureRecognizers?.forEach {
+            self.removeGestureRecognizer($0)
+        }
+        
         Utils.disableBtnFill(
             self.bookmarkBtn,
             imgName: "bookmark"
@@ -76,6 +85,22 @@ final class PostTableViewCell : UITableViewCell {
                     imgName: "bookmark"
                 )
             }
+            
+            self.bookmarkAnimView.isHidden = true
+            RenderUtils.drawBookmark(view: self.bookmarkAnimView)
+            let saveGestureRecogniser = UITapGestureRecognizer(
+                target: self,
+                action: #selector(self.onImageDoubleTapped)
+            )
+            saveGestureRecogniser.numberOfTapsRequired = 2
+            self.addGestureRecognizer(saveGestureRecogniser)
+            
+            let detailsGestureRecogniser = UITapGestureRecognizer(
+                target: self,
+                action: #selector(self.onPostTapped)
+            )
+            self.addGestureRecognizer(detailsGestureRecogniser)
+            detailsGestureRecogniser.require(toFail: saveGestureRecogniser)
         }
     }
     
@@ -93,15 +118,8 @@ final class PostTableViewCell : UITableViewCell {
         post.saved = sender.isSelected
         self.post = post
         
-        NotificationCenter.default.post(
-            name: NSNotification.Name(PostListConst.postSavedNotificationId),
-            object: nil,
-            userInfo: [
-                "permalink": post.data.permalink,
-                "saved": post.saved
-            ]
-        )
         SavedPostsManager.shared.updatePost(post)
+        notifyOnSaved(post: post)
     }
     
     @IBAction func shareBtnTapped(_ sender: UIButton) {
@@ -118,11 +136,74 @@ final class PostTableViewCell : UITableViewCell {
             parentVC.present(activityVC, animated: true, completion: nil)
         }
     }
+    
+    @objc
+    private func onImageDoubleTapped(_ gestureRecogniser: UIGestureRecognizer) {
+        let tapLocation = gestureRecogniser.location(in: self)
+        if self.postImageView.bounds.contains(
+            self.postImageView.convert(tapLocation, from: self)
+        ) {
+            guard var post = self.post else {
+                return
+            }
+            
+            if (!post.saved) {
+                Utils.enableBtnFill(
+                    self.bookmarkBtn,
+                    imgName: "bookmark"
+                )
+
+                post.saved = true
+                SavedPostsManager.shared.updatePost(post)
+                
+                animateSave()
+                DispatchQueue.main.asyncAfter(
+                    deadline: .now() + PostListConst.bookmarkAnimFadeDeadline
+                ) {
+                    self.animateSave()
+                    self.notifyOnSaved(post: post) // deferred due to cell reload
+                }
+            }
+            else {
+                animateSave()
+                DispatchQueue.main.asyncAfter(
+                    deadline: .now() + PostListConst.bookmarkAnimFadeDeadline,
+                    execute: animateSave
+                )
+            }
+        }
+    }
+    
+    @objc
+    private func onPostTapped() {
+        delegate?.postTableViewCellDidTap(self)
+    }
+    
+    // MARK: - Private methods
+    private func notifyOnSaved(post: ExtendedPostDetails) {
+        NotificationCenter.default.post(
+            name: NSNotification.Name(PostListConst.postSavedNotificationId),
+            object: nil,
+            userInfo: [
+                "permalink": post.data.permalink,
+                "saved": post.saved
+            ]
+        )
+    }
+    
+    private func animateSave() {
+        UIView.transition(
+            with: self,
+            duration: PostListConst.bookmarkAnimHalfDuration,
+            options: .transitionCrossDissolve
+        ) {
+            self.bookmarkAnimView.isHidden = !self.bookmarkAnimView.isHidden
+        }
+    }
 }
 
 // MARK: - Extensions
 extension UIView {
-    // MARK: - Properties
     var parentViewController: UIViewController? {
         var parentResponder: UIResponder? = self
         while parentResponder != nil {

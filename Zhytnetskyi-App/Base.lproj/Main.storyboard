@@ -208,7 +208,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="Q6B-LO-TfN" userLabel="TableHeaderView">
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="Q6B-LO-TfN" userLabel="SearchTextFieldWrapper">
                             <rect key="frame" x="0.0" y="0.0" width="402" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
@@ -338,6 +338,14 @@
                                                         <fontDescription key="titleFontDescription" type="system" pointSize="18"/>
                                                     </buttonConfiguration>
                                                 </button>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kha-SP-QZe" userLabel="BookmarkAnimView">
+                                                    <rect key="frame" x="156" y="121" width="70" height="90"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="70" id="0Eq-Gy-5VG"/>
+                                                        <constraint firstAttribute="height" constant="90" id="PWY-T5-Iph"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" systemColor="systemGray5Color"/>
                                             <constraints>
@@ -352,9 +360,11 @@
                                                 <constraint firstAttribute="bottom" secondItem="Z6z-Id-K7X" secondAttribute="bottom" id="MB1-up-Wkz"/>
                                                 <constraint firstItem="Zbc-xE-X61" firstAttribute="leading" secondItem="nqM-9K-wYL" secondAttribute="trailing" constant="3" id="MeW-X6-WcO"/>
                                                 <constraint firstAttribute="bottom" secondItem="t3g-Le-DQI" secondAttribute="bottom" id="O9A-OT-QW1"/>
+                                                <constraint firstItem="kha-SP-QZe" firstAttribute="centerX" secondItem="wRl-kx-TGx" secondAttribute="centerX" id="Y8i-HY-OZg"/>
                                                 <constraint firstItem="a6T-oK-U2I" firstAttribute="top" secondItem="BxI-QP-XaA" secondAttribute="bottom" constant="5" id="Yr1-v9-io0"/>
                                                 <constraint firstItem="RHC-c7-g1y" firstAttribute="leading" secondItem="wRl-kx-TGx" secondAttribute="leading" constant="5" id="Zl8-4B-TYf"/>
                                                 <constraint firstAttribute="trailing" secondItem="a6T-oK-U2I" secondAttribute="trailing" id="aqO-eK-ckF"/>
+                                                <constraint firstItem="kha-SP-QZe" firstAttribute="centerY" secondItem="a6T-oK-U2I" secondAttribute="centerY" id="dfB-cL-ZoK"/>
                                                 <constraint firstItem="AkD-B9-6AD" firstAttribute="top" secondItem="wRl-kx-TGx" secondAttribute="top" constant="3" id="dzI-oy-9IV"/>
                                                 <constraint firstItem="BxI-QP-XaA" firstAttribute="leading" secondItem="wRl-kx-TGx" secondAttribute="leading" constant="5" id="eAO-PW-Ys4"/>
                                                 <constraint firstAttribute="trailing" secondItem="QXJ-NI-OL1" secondAttribute="trailing" id="eT4-8W-niT"/>
@@ -388,6 +398,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="bookmarkAnimView" destination="kha-SP-QZe" id="9In-ui-4LC"/>
                                     <outlet property="bookmarkBtn" destination="QXJ-NI-OL1" id="aY8-UZ-YEi"/>
                                     <outlet property="commentsBtn" destination="t3g-Le-DQI" id="iXk-PM-DKg"/>
                                     <outlet property="domainLabel" destination="Zbc-xE-X61" id="KLd-ql-aTV"/>
@@ -397,7 +408,6 @@
                                     <outlet property="timeSincePostLabel" destination="Agy-Fg-bEj" id="DiI-nv-6tT"/>
                                     <outlet property="upvoteBtn" destination="Z6z-Id-K7X" id="V4S-Kc-LO1"/>
                                     <outlet property="userNameLabel" destination="RHC-c7-g1y" id="Te4-hq-Bg6"/>
-                                    <segue destination="Ban-hc-qkC" kind="show" identifier="ShowDetailsSegue" id="lKH-4k-ahz"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -442,13 +452,13 @@
         <!--PostDetailsViewController-->
         <scene sceneID="cAB-6t-RY8">
             <objects>
-                <viewController id="Ban-hc-qkC" userLabel="PostDetailsViewController" customClass="PostDetailsViewController" customModule="Zhytnetskyi_App" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PostDetailsViewController" id="Ban-hc-qkC" userLabel="PostDetailsViewController" customClass="PostDetailsViewController" customModule="Zhytnetskyi_App" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="s8X-u4-saX" userLabel="ScreenView">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rH7-cp-kfo" userLabel="PostView">
-                                <rect key="frame" x="10" y="178" width="382" height="618"/>
+                                <rect key="frame" x="10" y="134" width="382" height="662"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JBN-En-ueb" userLabel="UserNameLabel">
                                         <rect key="frame" x="5" y="3" width="80" height="22"/>
@@ -493,8 +503,16 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g7M-Ph-VSe" userLabel="PostImageView">
-                                        <rect key="frame" x="0.0" y="136" width="382" height="437"/>
+                                        <rect key="frame" x="0.0" y="136" width="382" height="481"/>
                                     </imageView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QPj-Yd-ceD" userLabel="BookmarkAnimView">
+                                        <rect key="frame" x="156" y="331.66666666666669" width="70" height="90"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="90" id="IMc-HG-Qod"/>
+                                            <constraint firstAttribute="width" constant="70" id="tzt-Ri-ceB"/>
+                                        </constraints>
+                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ITM-DP-h3k" userLabel="BookmarkBtn">
                                         <rect key="frame" x="342" y="0.0" width="40" height="40"/>
                                         <constraints>
@@ -515,7 +533,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XBV-Ti-SI7" userLabel="UpvoteBtn">
-                                        <rect key="frame" x="0.0" y="578" width="100" height="40"/>
+                                        <rect key="frame" x="0.0" y="622" width="100" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="F6m-3N-BAM"/>
                                             <constraint firstAttribute="width" constant="100" id="vJG-o7-Epc"/>
@@ -530,7 +548,7 @@
                                         </buttonConfiguration>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VRO-lS-lNn" userLabel="ShareBtn">
-                                        <rect key="frame" x="282" y="578" width="100" height="40"/>
+                                        <rect key="frame" x="282" y="622" width="100" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="0ik-r8-CVn"/>
                                             <constraint firstAttribute="width" constant="100" id="Jns-T3-g1o"/>
@@ -548,7 +566,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n1C-Cz-DIF" userLabel="CommentsBtn">
-                                        <rect key="frame" x="139" y="578" width="104" height="40"/>
+                                        <rect key="frame" x="139" y="622" width="104" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="LTG-ag-Osl"/>
                                             <constraint firstAttribute="width" constant="104" id="qw1-Ms-pU8"/>
@@ -567,6 +585,7 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="3Wc-Sc-06Z" secondAttribute="trailing" id="0x1-DY-igd"/>
                                     <constraint firstAttribute="trailing" secondItem="g7M-Ph-VSe" secondAttribute="trailing" id="69l-SB-5jD"/>
+                                    <constraint firstItem="QPj-Yd-ceD" firstAttribute="centerY" secondItem="g7M-Ph-VSe" secondAttribute="centerY" id="81W-88-vcZ"/>
                                     <constraint firstItem="vZg-eW-Gw1" firstAttribute="top" secondItem="JBN-En-ueb" secondAttribute="bottom" constant="10" id="B7O-Yj-LIv"/>
                                     <constraint firstAttribute="trailing" secondItem="vZg-eW-Gw1" secondAttribute="trailing" id="Did-pf-lPB"/>
                                     <constraint firstItem="xQa-w0-bQ8" firstAttribute="leading" secondItem="T54-QD-u8p" secondAttribute="trailing" constant="3" id="HNA-QH-wlk"/>
@@ -593,6 +612,7 @@
                                     <constraint firstAttribute="trailing" secondItem="ITM-DP-h3k" secondAttribute="trailing" id="wdR-cW-UBx"/>
                                     <constraint firstItem="JBN-En-ueb" firstAttribute="top" secondItem="rH7-cp-kfo" secondAttribute="top" constant="3" id="xaU-u3-b4g"/>
                                     <constraint firstItem="g7M-Ph-VSe" firstAttribute="leading" secondItem="rH7-cp-kfo" secondAttribute="leading" id="xbL-rH-fTB"/>
+                                    <constraint firstItem="QPj-Yd-ceD" firstAttribute="centerX" secondItem="rH7-cp-kfo" secondAttribute="centerX" id="yyN-Sw-hhK"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -612,6 +632,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="VRV-X1-g8y"/>
                     <connections>
+                        <outlet property="bookmarkAnimView" destination="QPj-Yd-ceD" id="sIh-52-UXl"/>
                         <outlet property="bookmarkBtn" destination="ITM-DP-h3k" id="GiT-cK-4s9"/>
                         <outlet property="commentsBtn" destination="n1C-Cz-DIF" id="mbr-ih-3px"/>
                         <outlet property="domainLabel" destination="TnV-B7-8fU" id="ifr-3Z-F5T"/>

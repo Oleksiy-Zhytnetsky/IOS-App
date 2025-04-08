@@ -15,8 +15,12 @@ final class PostListViewController : UITableViewController, UITextFieldDelegate 
         static let loadLimit = 15
         
         static let cellReuseId = "PostTableCell"
-        static let detailsSegueId = "ShowDetailsSegue"
         static let postSavedNotificationId = "PostSavedStatusChanged"
+        static let postDetailsVCId = "PostDetailsViewController"
+        
+        static let bookmarkAnimHalfDuration = 0.35
+        static let bookmarkAnimFadeDelay = 0.1
+        static let bookmarkAnimFadeDeadline = bookmarkAnimHalfDuration + bookmarkAnimFadeDelay
     }
     
     // MARK: - Properties
@@ -73,6 +77,7 @@ final class PostListViewController : UITableViewController, UITextFieldDelegate 
         
         let post = self.posts[indexPath.row]
         cell.configure(for: post)
+        cell.delegate = self
         return cell
     }
     
@@ -91,20 +96,6 @@ final class PostListViewController : UITableViewController, UITextFieldDelegate 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-    
-    // MARK: - Navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Const.detailsSegueId {
-            let detailsVC = segue.destination as! PostDetailsViewController
-            if let post = sender as? ExtendedPostDetails {
-                detailsVC.setPost(post)
-            }
-            else if let cell = sender as? UITableViewCell,
-                    let indexPath = tableView.indexPath(for: cell) {
-                detailsVC.setPost(self.posts[indexPath.row])
-            }
-        }
     }
     
     // MARK: - Action handlers
@@ -231,5 +222,25 @@ final class PostListViewController : UITableViewController, UITextFieldDelegate 
                 print("Error loading posts: \(error)")
             }
         }
+    }
+}
+
+extension PostListViewController : PostTableViewCellDelegate {
+    func postTableViewCellDidTap(_ cell: PostTableViewCell) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else {
+            return
+        }
+        
+        let post = self.posts[indexPath.row]
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let postDetailsVC = storyboard.instantiateViewController(
+            withIdentifier: Const.postDetailsVCId
+        ) as! PostDetailsViewController
+        
+        postDetailsVC.setPost(post)
+        self.navigationController?.pushViewController(
+            postDetailsVC,
+            animated: true
+        )
     }
 }

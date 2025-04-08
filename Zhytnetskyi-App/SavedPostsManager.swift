@@ -64,7 +64,7 @@ final class SavedPostsManager {
     }
         
     func getAllSavedPosts() -> [ExtendedPostDetails] {
-        return self.savedPosts
+        return self.savedPosts.reversed()
     }
     
     // MARK: - Private Methods

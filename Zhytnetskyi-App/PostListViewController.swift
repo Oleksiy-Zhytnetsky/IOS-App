@@ -82,7 +82,7 @@ final class PostListViewController : UITableViewController, UITextFieldDelegate 
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height
         
-        if (offsetY > (contentHeight - height)) {
+        if (offsetY > (contentHeight - height * 3)) {
             loadPosts(limit: Const.loadLimit)
         }
     }
@@ -91,17 +91,6 @@ final class PostListViewController : UITableViewController, UITextFieldDelegate 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-    
-    // MARK: - UIViewController override
-    override func viewWillTransition(
-        to size: CGSize,
-        with coordinator: UIViewControllerTransitionCoordinator
-    ) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: { _ in
-            self.tableView.reloadData()
-        })
     }
     
     // MARK: - Navigation
@@ -234,13 +223,6 @@ final class PostListViewController : UITableViewController, UITextFieldDelegate 
                                 at: indexPaths,
                                 with: .automatic
                             )
-                        } completion: { _ in
-                            if let visibleRows = self.tableView.indexPathsForVisibleRows {
-                                self.tableView.reloadRows(
-                                    at: visibleRows,
-                                    with: .none
-                                )
-                            }
                         }
                     }
                 }

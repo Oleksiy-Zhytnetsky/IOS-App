@@ -212,24 +212,6 @@
                             <rect key="frame" x="0.0" y="0.0" width="402" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7lb-mH-nQ3" userLabel="AppModeBtn">
-                                    <rect key="frame" x="353" y="5.6666666666666679" width="44" height="44"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="44" id="KF9-0j-tPP"/>
-                                        <constraint firstAttribute="height" constant="44" id="KSt-9s-lwb"/>
-                                    </constraints>
-                                    <color key="tintColor" systemColor="labelColor"/>
-                                    <state key="normal" title="Button"/>
-                                    <buttonConfiguration key="configuration" style="plain" image="bookmark" catalog="system">
-                                        <backgroundConfiguration key="background">
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </backgroundConfiguration>
-                                        <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" weight="semibold"/>
-                                    </buttonConfiguration>
-                                    <connections>
-                                        <action selector="appModeBtnTapped:" destination="1wS-aH-Yh5" eventType="touchUpInside" id="DKx-pk-CKU"/>
-                                    </connections>
-                                </button>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search posts" textAlignment="natural" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="SWi-dG-Uay" userLabel="SearchTextField">
                                     <rect key="frame" x="119.66666666666669" y="9.6666666666666643" width="163" height="36"/>
                                     <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -240,10 +222,7 @@
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstItem="SWi-dG-Uay" firstAttribute="centerX" secondItem="Q6B-LO-TfN" secondAttribute="centerX" id="8Zq-WB-QtK"/>
-                                <constraint firstItem="7lb-mH-nQ3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="SWi-dG-Uay" secondAttribute="trailing" constant="5" id="GYi-Qo-v5Y"/>
                                 <constraint firstItem="SWi-dG-Uay" firstAttribute="centerY" secondItem="Q6B-LO-TfN" secondAttribute="centerY" id="KgW-i4-2ZY"/>
-                                <constraint firstItem="7lb-mH-nQ3" firstAttribute="centerY" secondItem="Q6B-LO-TfN" secondAttribute="centerY" id="mef-UE-86Q"/>
-                                <constraint firstAttribute="trailing" secondItem="7lb-mH-nQ3" secondAttribute="trailing" constant="5" id="rjp-pX-SEV"/>
                             </constraints>
                         </view>
                         <prototypes>
@@ -257,37 +236,37 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wRl-kx-TGx" userLabel="PostView">
                                             <rect key="frame" x="10" y="5" width="382" height="290"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHC-c7-g1y" userLabel="UserNameLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RHC-c7-g1y" userLabel="UserNameLabel">
                                                     <rect key="frame" x="5" y="3" width="80" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10h" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Agy-Fg-bEj" userLabel="TimeSincePostLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="10h" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Agy-Fg-bEj" userLabel="TimeSincePostLabel">
                                                     <rect key="frame" x="103" y="3" width="29" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="⋅" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AkD-B9-6AD" userLabel="DotFstLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="⋅" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AkD-B9-6AD" userLabel="DotFstLabel">
                                                     <rect key="frame" x="88" y="3" width="12" height="21.666666666666668"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="⋅" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqM-9K-wYL" userLabel="DotSndLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="⋅" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nqM-9K-wYL" userLabel="DotSndLabel">
                                                     <rect key="frame" x="135" y="3" width="12" height="22"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="domain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zbc-xE-X61" userLabel="DomainLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="domain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zbc-xE-X61" userLabel="DomainLabel">
                                                     <rect key="frame" x="150" y="3" width="60" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In aliquet leo purus." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BxI-QP-XaA" userLabel="PostTitleLabel">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In aliquet leo purus." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BxI-QP-XaA" userLabel="PostTitleLabel">
                                                     <rect key="frame" x="5" y="35" width="377" height="43"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                     <nil key="textColor"/>
@@ -296,7 +275,7 @@
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a6T-oK-U2I" userLabel="PostImageView">
                                                     <rect key="frame" x="0.0" y="83" width="382" height="166"/>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QXJ-NI-OL1" userLabel="BookmarkBtn">
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QXJ-NI-OL1" userLabel="BookmarkBtn">
                                                     <rect key="frame" x="342" y="0.0" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="5Bl-dm-X0u"/>
@@ -314,7 +293,7 @@
                                                         <action selector="bookmarkBtnTapped:" destination="nfs-lJ-ihp" eventType="touchUpInside" id="eNe-DP-5Kq"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6z-Id-K7X" userLabel="UpvoteBtn">
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6z-Id-K7X" userLabel="UpvoteBtn">
                                                     <rect key="frame" x="0.0" y="254" width="100" height="36"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="100" id="BCp-HO-fty"/>
@@ -328,7 +307,7 @@
                                                         <fontDescription key="titleFontDescription" type="system" pointSize="18"/>
                                                     </buttonConfiguration>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MCv-Vg-7i7" userLabel="ShareBtn">
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MCv-Vg-7i7" userLabel="ShareBtn">
                                                     <rect key="frame" x="282" y="255" width="100" height="35"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="100" id="zrO-ac-shA"/>
@@ -345,7 +324,7 @@
                                                         <action selector="shareBtnTapped:" destination="nfs-lJ-ihp" eventType="touchUpInside" id="Epg-AH-n5U"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t3g-Le-DQI" userLabel="CommentsBtn">
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t3g-Le-DQI" userLabel="CommentsBtn">
                                                     <rect key="frame" x="139" y="254" width="104" height="36"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="104" id="2lM-IW-zp6"/>
@@ -429,9 +408,30 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="mrR-3E-8DY">
                         <nil key="title"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="sS8-zS-Cg3">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" ambiguous="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="7lb-mH-nQ3" userLabel="AppModeBtn">
+                                <rect key="frame" x="339" y="0.0" width="47" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="KF9-0j-tPP"/>
+                                    <constraint firstAttribute="height" constant="44" id="KSt-9s-lwb"/>
+                                </constraints>
+                                <color key="tintColor" systemColor="labelColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="bookmark" catalog="system">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </backgroundConfiguration>
+                                    <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage" weight="semibold"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="appModeBtnTapped:" destination="1wS-aH-Yh5" eventType="touchUpInside" id="DKx-pk-CKU"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="appModeBtn" destination="7lb-mH-nQ3" id="DLE-a1-SA3"/>
+                        <outlet property="appModeBtn" destination="7lb-mH-nQ3" id="Uri-6l-yTp"/>
                         <outlet property="searchTextField" destination="SWi-dG-Uay" id="51G-We-YCu"/>
                     </connections>
                 </tableViewController>

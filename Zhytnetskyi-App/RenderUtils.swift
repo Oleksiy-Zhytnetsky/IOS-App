@@ -53,7 +53,7 @@ final class RenderUtils {
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
         shapeLayer.strokeColor = UIColor.black.cgColor
-        shapeLayer.fillColor = UIColor.lightGray.cgColor
+        shapeLayer.fillColor = UIColor.red.cgColor
         shapeLayer.lineWidth = 3
         view.layer.addSublayer(shapeLayer)
     }
